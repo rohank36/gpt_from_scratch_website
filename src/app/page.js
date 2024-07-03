@@ -1,4 +1,8 @@
+'use client'
+import { useState } from 'react';
+
 export default function Home() {
+
   const hyperlink = "text-blue-500 underline"
   const hyperparameters = "batch_size = 64, block_size = 256, emb_dim = 384, n_head = 6, vocab_size = 65, max_iters = 5000, lr = 3e-4, n_layers = 6, dropout = 0.2"
   const scaledHP = "batch_size = 64, block_size = 128, emb_dim = 256, n_head = 6, vocab_size = 65, max_iters = 3500, lr = 1e-3, n_layers = 3, dropout = 0.2"
@@ -6,6 +10,46 @@ export default function Home() {
   const incoherentBlobs ="fhIqUz-DAHpNVvN!IebiqGZSEvD-3Zw?Bjx$KYk-wPmD3vRlbd dO IK R$KasbQge3EEYpC! 'scf:AliEba$iol$CIG? GKtFwkLMvO!vmO?&D?;M$zBP.S3dGdAI.&co"
   const coherentBlobs = "MARCINIUS: Did he we will defy it. CORIOLANUS: My lord; which payte you do to live it? Reason That makest my leavel this officed of each arguie"
   const ela = "ELA: Break! At bed, by him! who see work! What sering you proving of it; the hose, tife of it cames"
+  
+  const [generatedText, setGeneratedText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  const fetchRandomText = async () => {
+    try{
+      const response = await fetch('http://localhost:3000/api/',{
+        method:'GET',
+      });
+      if(!response.ok){
+        return "error"
+      }
+      const data = await response.json();
+      return data.chunk;
+
+    }catch(e){
+      throw e;
+    }
+  };
+
+  const typeText = async () => {
+    setGeneratedText('')
+    setIsTyping(true);
+    const text = await fetchRandomText();
+    let currentIndex = 0;
+
+    const typeNextChar = () => {
+      if (currentIndex < text.length) {
+        setGeneratedText((prev) => prev + text[currentIndex]);
+        currentIndex += 1;
+        setTimeout(typeNextChar, 5); // Adjust typing speed here
+      } else {
+        setIsTyping(false);
+      }
+    };
+
+    typeNextChar();
+  };
+  
+  
   return (
     <div className="flex h-screen">
 
@@ -31,7 +75,8 @@ export default function Home() {
 
       <div className="w-2/5 overflow-y-auto flex flex-col items-center pt-8">
         <div className="text-center">
-          <button className="btn">Generate</button>
+          <button className="btn" onClick={typeText} disabled={isTyping}>Generate</button>
+            <div className="p-2 text-left mt-4 whitespace-pre-wrap">{generatedText}</div>
         </div>
       </div>
 

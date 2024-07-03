@@ -1,113 +1,40 @@
-import Image from "next/image";
-
 export default function Home() {
+  const hyperlink = "text-blue-500 underline"
+  const hyperparameters = "batch_size = 64, block_size = 256, emb_dim = 384, n_head = 6, vocab_size = 65, max_iters = 5000, lr = 3e-4, n_layers = 6, dropout = 0.2"
+  const scaledHP = "batch_size = 64, block_size = 128, emb_dim = 256, n_head = 6, vocab_size = 65, max_iters = 3500, lr = 1e-3, n_layers = 3, dropout = 0.2"
+  const crossEntropy = "step 0: train loss 4.2207, val loss 4.2290, step 500: train loss 1.7598, val loss 1.9107, step 1000: train loss 1.3932, val loss 1.6045, step 1500: train loss 1.2673, val loss 1.5316, step 2000: train loss 1.1891, val loss 1.5067, step 2500: train loss 1.1234, val loss 1.4970, step 3000: train loss 1.0729, val loss 1.4882, step 3500: train loss 1.0211, val loss 1.5063, step 4000: train loss 0.9637, val loss 1.5162, step 4500: train loss 0.9105, val loss 1.5468, step 4999: train loss 0.8597, val loss 1.5753"
+  const incoherentBlobs ="fhIqUz-DAHpNVvN!IebiqGZSEvD-3Zw?Bjx$KYk-wPmD3vRlbd dO IK R$KasbQge3EEYpC! 'scf:AliEba$iol$CIG? GKtFwkLMvO!vmO?&D?;M$zBP.S3dGdAI.&co"
+  const coherentBlobs = "MARCINIUS: Did he we will defy it. CORIOLANUS: My lord; which payte you do to live it? Reason That makest my leavel this officed of each arguie"
+  const ela = "ELA: Break! At bed, by him! who see work! What sering you proving of it; the hose, tife of it cames"
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="flex h-screen">
+
+      <div className="w-3/5 overflow-y-auto flex flex-col items-center pt-8">
+        <div className="text-center">
+          <h1 className="text-lg">Mini Shakespeare - GPT From Scratch</h1>
+          <h3>Made with ❤️ by <a href="https://www.linkedin.com/in/rohankanti/" className={hyperlink}>Rohan</a></h3>
+          <div className="text-left p-2 space-y-5">
+            <p>I implemented the <a href="https://arxiv.org/abs/1706.03762" className={hyperlink}>Transformer Decoder</a> architecture from scratch with Python + Pytorch and trained a 10m parameter model on ~40,000 lines of <a href="https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt" className={hyperlink}>Shakespeare</a>. My code is <a className={hyperlink}>here</a>.</p>
+            <p>I did this to gain a better understanding of the Transformer model which is at the heart of many popular LLMs.</p>
+            <p>It was challenging to learn so I leveraged various modes of knowledge input: coding inspired by <a href="https://www.youtube.com/watch?v=kCc8FmEb1nY" className={hyperlink}>Andrej Karpathy</a>, reading from <a href="https://deepgram.com/learn/visualizing-and-explaining-transformer-models-from-the-ground-up" className={hyperlink}>Andy Wang</a>, videos from <a href="https://www.youtube.com/watch?v=wjZofJX0v4M" className={hyperlink}>3Blue1Brown</a>, and questions answered by <a href="https://www.perplexity.ai/" className={hyperlink}>Perplexity</a>.</p>
+            <p>This project clarified various concepts I struggled with such as: how the shape of the tensors changes throughout the forward pass and what that means, the attention matrix/pattern, how context is built through self-attention, and how the outputs of single heads work together to form a refined vector representation of the token. Coding it helped to spell all this and much more out for me. I definitely should've paid more attention in Linear Algebra😅</p>
+            <p>I trained the model with Tokenizer (1 char = 1 token), Optimizer = AdamW, and these <span className="lg:tooltip underline" data-tip={hyperparameters}>hyperparameters</span> on a single GPU resulting in the these <span className="lg:tooltip underline" data-tip={crossEntropy}>Cross-Entropy Losses</span> with the model overfitting a bit after the 3000th step.</p>
+            <p>Running the model with those hyperparameters took ~5hrs so here are the <span className="lg:tooltip underline" data-tip={scaledHP}>scaled down hyperparameters</span> I used to play around with a 2m parameter model yielding <a href="https://github.com/rohank36/gpt-from-scratch/blob/main/output.txt" className={hyperlink}>these results</a>. At each evaluation step t, I also generated some text using the models weights at t. Here you can see how the model learns over time. For example, at each t, the model learns more about Shakespeare's structure as it learns to name speakers followed by some text.</p>
+            <p>It's really cool to see the model going from producing <span className="lg:tooltip underline" data-tip={incoherentBlobs}>incoherent blobs of text</span> to <span className="lg:tooltip underline" data-tip={coherentBlobs}>slighty coherent blobs of text</span> in just a few iterations.</p>
+            <p>On another crazy cool note, during one training iteration, I was showing my sister the model output and one of the speakers names that it came up with was her name: <span className="lg:tooltip underline" data-tip={ela}>ELA!!</span>. She thought I was playing a joke on her, but I was genuinely shocked! Throughout the whole input text theres no mention of "Ela" as a word. Only one mention of ela as a subword: "d<span className="underline">ela</span>nt". Perhaps it was from ISABELLA when ISABELLA wasn't properly learned yet🤔 This whole thing has prompted me to learn more about model interpretability.</p>
+            <p>Note that the text generated on the right from the 10m model may appear alright at a glance but it's actually incoherent when you read it. To solve this I would probably need to scale up the hyperparameters and train for longer.</p>
+            <p>I'm currently very interested in Deep Learning and its numerous applications. If you want to chat please connect with me via my <a href="https://www.linkedin.com/in/rohankanti/" className={hyperlink}>LinkedIn</a> or rohankanti2527@gmail.com</p>
+          </div>
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+
+      <div className="w-2/5 overflow-y-auto flex flex-col items-center pt-8">
+        <div className="text-center">
+          <button className="btn">Generate</button>
+        </div>
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }

@@ -6,7 +6,7 @@ import path from 'path';
 export async function GET() {
     try{
         const data = await getText()
-        return NextResponse.json({ chunk: data}, { status: 201 });
+        return NextResponse.json({ chunk: data}, { status: 201, headers: { 'Cache-Control': 'no-cache' } });
     }catch(err){
         console.error("Failed to get text", err);
         return NextResponse.json({ message: "Failed to get text", error: err}, { status: 500 });
@@ -22,6 +22,7 @@ function getText() {
 
   // Get a random starting point
   const start = Math.floor(Math.random() * (fileLength - 800));
+  console.log(`Random start point: ${start}`);
   const chunk = fileContent.substring(start, start + 800);
 
   return chunk
